@@ -3,17 +3,23 @@ package com.hbc.training
 private[training] trait BadExample {
   final def bad(limit: Int) = {
     //could be worse var could be outside
-    var i = 0
-    while (i <= limit) {
-      //could be worse could be an insert in a table
-      println(s"i=$i")
-      i = i + 1
-    }
+
   }
+
+  def produceValuesTo(limit: Int) : Seq[Int] = 0 to limit
+
+  def format(value: Int) : String = s"i=$value"
+
+//  what are the smaller functions?
+  //produce values
+  //format values
+  //print values
+
 }
 
 object BadExample extends BadExample {
   def main(args: Array[String]): Unit = {
+
     bad(17)
   }
 }
