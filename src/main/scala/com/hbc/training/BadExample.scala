@@ -2,14 +2,16 @@ package com.hbc.training
 
 private[training] trait BadExample {
   final def bad(limit: Int) = {
-    //could be worse var could be outside
-    var i = 0
-    while (i <= limit) {
-      //could be worse could be an insert in a table
-      println(s"i=$i")
-      i = i + 1
-    }
+    getValues(limit)
   }
+
+  def getValues(limit:Int): Seq[Int] = 0 to limit
+
+  def letPrint(str: String): Unit = {
+    println(str)
+  }
+
+  def format(str: String): String = s"i=$str"
 }
 
 object BadExample extends BadExample {
