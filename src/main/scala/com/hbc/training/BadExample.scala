@@ -1,9 +1,9 @@
 package com.hbc.training
 
 private[training] trait BadExample {
-  final def bad(limit: Int) = {
+  final def good(limit: Int) = {
     //could be worse var could be outside
-
+    produceValuesTo(limit) map format
   }
 
   def produceValuesTo(limit: Int) : Seq[Int] = 0 to limit
@@ -20,7 +20,7 @@ private[training] trait BadExample {
 object BadExample extends BadExample {
   def main(args: Array[String]): Unit = {
 
-    bad(17)
+    println(good(17))
   }
 }
 

@@ -16,6 +16,12 @@ final class BadExampleTest extends WordSpecLike with MustMatchers with BadExampl
       produceValuesTo(0) must contain theSameElementsAs Seq(0)
     }
   }
+
+  "format" should {
+    "work for some number" in {
+      format(123) must be("i=123")
+    }
+  }
   private def expectedValue = Seq(0,1,2,3,4,5,6,7,8,9,10)
 
 }
