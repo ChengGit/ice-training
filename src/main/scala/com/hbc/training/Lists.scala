@@ -8,5 +8,8 @@ private[training] trait Lists {
   def snoc[A](head:ListL[A], tail:A):ListL[A] = Snoc(head, tail)
   def lin[A]:ListL[A] = Lin
 //  def maybe
-  def head[A](list:ListR[A]):Maybe[A] = ???
+  def head[A]: ListR[A] => Maybe[A] = {
+    case Cons(head, _) => just(head)
+    case Nil => empty
+  }
 }
