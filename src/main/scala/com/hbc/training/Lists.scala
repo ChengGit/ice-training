@@ -12,4 +12,8 @@ private[training] trait Lists {
     case Cons(head, _) => just(head)
     case Nil => empty
   }
+  def tail[A]: ListR[A] => Maybe[ListR[A]] = {
+    case Cons(_, tail) => just(tail)
+    case Nil => empty
+  }
 }
