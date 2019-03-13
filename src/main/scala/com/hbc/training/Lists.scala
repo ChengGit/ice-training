@@ -1,5 +1,7 @@
 package com.hbc.training
 
+import scala.annotation.tailrec
+
 //private[training] only available in training
 private[training] trait Lists {
 
@@ -8,12 +10,21 @@ private[training] trait Lists {
   def snoc[A](head:ListL[A], tail:A):ListL[A] = Snoc(head, tail)
   def lin[A]:ListL[A] = Lin
 
-  def head[A]: ListR[A] => Maybe[A] = {
+  final def mapListR[A, B]: (A => B) => ListR[A] => ListR[B] =
+    f => list => map(list, nil[B], f)
+
+  @tailrec
+  private def map[A,B](list:ListR[A], acc:ListR[B], f:A => B): ListR[B] = list match {
+    case Nil => acc
+    case Cons(h, t) => map(t, cons(f(h), acc), f)
+  }
+
+  def headR[A]: ListR[A] => Maybe[A] = {
     case Cons(head, _) => just(head)
     case Nil => empty
   }
 
-  def tail[A]: ListR[A] => Maybe[ListR[A]] = {
+  def tailR[A]: ListR[A] => Maybe[ListR[A]] = {
     case Cons(_, tail) => just(tail)
     case Nil => empty
   }
