@@ -26,7 +26,9 @@ final class ListsTest extends WordSpecLike with MustMatchers with Lists {
 
   "Map" should {
     "return a new list successfully" in {
-      mapListR[Int, Int](_ + 3)(cons(2, nil)) mustBe cons(5, nil)
+      mapListR[Int, Int](_ + 3)(cons(2, (cons(3, nil)))) mustBe cons(5, cons(6, nil))
     }
   }
+
+
 }

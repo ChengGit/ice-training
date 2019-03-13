@@ -19,6 +19,8 @@ private[training] trait Lists {
     case Cons(h, t) => map(t, cons(f(h), acc), f)
   }
 
+  def reverse[A]: ListR[A] => ListR[A] = ???
+
   def headR[A]: ListR[A] => Maybe[A] = {
     case Cons(head, _) => just(head)
     case Nil => empty
