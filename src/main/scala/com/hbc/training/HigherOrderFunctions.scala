@@ -1,9 +1,11 @@
 package com.hbc.training
 
-trait HigherOrderFunctions {
-  def something[A, B, C, D]: (A, B, C) => D = ???
+import scala.annotation.tailrec
 
-  def something_else[A, B, C, D]: A => (B => (C => D)) = ???
+private[training] trait HigherOrderFunctions {
+//  def something[A, B, C, D]: (A, B, C) => D = ???
+
+//  def something_else[A, B, C, D]: A => (B => (C => D)) = ???
 
   type Price = BigDecimal
   final case class Rate(value: BigDecimal)
@@ -16,11 +18,21 @@ trait HigherOrderFunctions {
   //  }
   //  def discount_3: (Profile => Rate) => Profile => Price => Price
 
-  def discount: Rate => Price => Price = ???
+//  def discount: Rate => Price => Price = ???
+//
+//  def rate: Profile => Rate = ???
+//
+//  def variantPrice: (Rate => Price => Price) => (Profile => Rate) => Profile => Price => Price = ???
+//
+//  val yourVariantPrice: Profile => Price => Price = variantPrice(discount)(rate)
 
-  def rate: Profile => Rate = ???
+  @tailrec
+  private final def factorial (num: Int, acc: Int): Int = num match {
+    case 0 => acc
+    case _ => factorial(num-1, acc * num)
+  }
 
-  def variantPrice: (Rate => Price => Price) => (Profile => Rate) => Profile => Price => Price = ???
+  def factorial: Int => Int = factorial (_, 1)
 
-  val yourVariantPrice: Profile => Price => Price = variantPrice(discount)(rate)
 }
+
