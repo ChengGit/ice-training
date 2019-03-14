@@ -54,5 +54,11 @@ final class ListsTest extends WordSpecLike with MustMatchers with Lists {
     }
   }
 
+  "Show" should {
+    "return a string representing the list" in {
+      cons(1,cons(2, cons(3,nil))).show mustBe "[Int[1],Int[2],Int[3]]"
+    }
+  }
+
 
 }

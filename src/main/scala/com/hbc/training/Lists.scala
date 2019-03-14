@@ -44,4 +44,8 @@ private[training] trait Lists {
     case Snoc(_, tail) => just(tail)
     case Lin => empty
   }
+
+  implicit final def showList[A](implicit S: Show[A]): Show[ListR[A]] = new Show[ListR[A]] {
+    override def show: ListR[A] => String = fold[A, String](s => a => s"${S.show(a)},$s")("")(_)
+  }
 }
