@@ -18,4 +18,11 @@ private[training] trait Maybes {
       case _ => empty
     }
   }
+
+  def showMaybe[A]: Show[Maybe[A]] = new Show[Maybe[A]] {
+    override def show: Maybe[A] => String = {
+      case Just(a) => s"this is just a $a"
+      case Empty => "this is empty"
+    }
+  }
 }
