@@ -10,15 +10,18 @@ private[training] trait Lists {
   def snoc[A](head:ListL[A], tail:A):ListL[A] = Snoc(head, tail)
   def lin[A]:ListL[A] = Lin
 
-  final def mapListR[A, B]: (A => B) => ListR[A] => ListR[B] = f => list => reverseR[B](mapListR(list, nil[B], f))
+//  final def mapListR[A, B]: (A => B) => ListR[A] => ListR[B] = f => list => reverseR[B](mapListR(list, nil[B], f))
+  final def mapListR[A,B]: (A => B) => ListR[A] => ListR[B] =
+    f => as => reverseR(fold[A,ListR[B]](bs => a => cons(f(a), bs))(nil[B])(as))
 
-  final def reverseR[A]: ListR[A] => ListR[A] = reverseR(_, nil)
+  final def reverseR[A]: ListR[A] => ListR[A] = reverseRLoop(_, nil)
 
 //  final def sumR: ListR[Int] => Int = sumR(_, 0)
+  final def sumR: ListR[Int] => Int = fold[Int,Int](b => a => a + b)(0)
 
   final def fold[A,B]: (B => A => B) => B => ListR[A] => B = acc => zero => foldLoop(_, zero, acc)
 
-  final def sumR: ListR[Int] => Int = fold[Int,Int](b => a => a + b)(0)
+
 
   @tailrec
   private def foldLoop[A,B](list: ListR[A], acc: B, f: B => A => B): B = list match {
@@ -26,16 +29,16 @@ private[training] trait Lists {
     case Cons(h,t) => foldLoop(t, f(acc)(h), f)
   }
 
-  @tailrec
-  private def mapListR[A,B](list:ListR[A], acc:ListR[B], f:A => B): ListR[B] = list match {
-    case Nil => acc
-    case Cons(h, t) => mapListR(t, cons(f(h), acc), f)
-  }
+//  @tailrec
+//  private def mapListR[A,B](list:ListR[A], acc:ListR[B], f:A => B): ListR[B] = list match {
+//    case Nil => acc
+//    case Cons(h, t) => mapListR(t, cons(f(h), acc), f)
+//  }
 
   @tailrec
-  private def reverseR[A](list: ListR[A], acc: ListR[A]): ListR[A] = list match {
+  private def reverseRLoop[A](list: ListR[A], acc: ListR[A]): ListR[A] = list match {
     case Nil => acc
-    case Cons(h,t) => reverseR(t, cons(h, acc))
+    case Cons(h,t) => reverseRLoop(t, cons(h, acc))
   }
 
 //  @tailrec
