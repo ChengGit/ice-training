@@ -1,5 +1,5 @@
 package com.hbc.training
 
-private[training] trait Show[A] {
+trait Show[A] {
   def show: A => String
 }
