@@ -30,11 +30,11 @@ class MaybesTest extends WordSpecLike with MustMatchers with Maybes {
 
   "Show" should {
     "print a correct string when maybe is a just" in {
-      showMaybe.show(just(5)) mustBe "this is just a 5"
+      Show[Maybe[Int]] show just(5) mustBe "this is just a 5"
     }
 
     "print a proper empty string if maybe is empty" in {
-      showMaybe.show(training.empty) mustBe "this is empty"
+      Show[Maybe[Int]] show training.empty mustBe "this is empty"
     }
   }
 }
