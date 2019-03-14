@@ -10,16 +10,21 @@ private[training] trait Lists {
   def snoc[A](head:ListL[A], tail:A):ListL[A] = Snoc(head, tail)
   def lin[A]:ListL[A] = Lin
 
-  final def mapListR[A, B]: (A => B) => ListR[A] => ListR[B] =
-    f => list => map(list, nil[B], f)
+  final def mapListR[A, B]: (A => B) => ListR[A] => ListR[B] = f => list => mapListR(list, nil[B], f)
 
   @tailrec
-  private def map[A,B](list:ListR[A], acc:ListR[B], f:A => B): ListR[B] = list match {
+  private def mapListR[A,B](list:ListR[A], acc:ListR[B], f:A => B): ListR[B] = list match {
     case Nil => acc
-    case Cons(h, t) => map(t, cons(f(h), acc), f)
+    case Cons(h, t) => mapListR(t, reverseR[B](cons(f(h), acc)), f)
   }
 
-  def reverse[A]: ListR[A] => ListR[A] = ???
+  final def reverseR[A]: ListR[A] => ListR[A] = reverseR(_, nil)
+
+  @tailrec
+  private def reverseR[A](list: ListR[A], acc: ListR[A]): ListR[A] = list match {
+    case Nil => acc
+    case Cons(h,t) => reverseR(t, cons(h, acc))
+  }
 
   def headR[A]: ListR[A] => Maybe[A] = {
     case Cons(head, _) => just(head)
