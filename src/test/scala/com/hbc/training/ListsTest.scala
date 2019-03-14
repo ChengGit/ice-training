@@ -44,5 +44,15 @@ final class ListsTest extends WordSpecLike with MustMatchers with Lists {
     }
   }
 
+  "Sum" should {
+    "add up all integers from a list of integers" in {
+      sumR(cons(1, cons(2, cons(3, nil)))) mustBe 6
+    }
+
+    "return 0 when the list is empty" in {
+      sumR(nil) mustBe 0
+    }
+  }
+
 
 }

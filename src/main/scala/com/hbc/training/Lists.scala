@@ -10,12 +10,12 @@ private[training] trait Lists {
   def snoc[A](head:ListL[A], tail:A):ListL[A] = Snoc(head, tail)
   def lin[A]:ListL[A] = Lin
 
-  final def mapListR[A, B]: (A => B) => ListR[A] => ListR[B] = f => list => mapListR(list, nil[B], f)
+  final def mapListR[A, B]: (A => B) => ListR[A] => ListR[B] = f => list => reverseR[B](mapListR(list, nil[B], f))
 
   @tailrec
   private def mapListR[A,B](list:ListR[A], acc:ListR[B], f:A => B): ListR[B] = list match {
     case Nil => acc
-    case Cons(h, t) => mapListR(t, reverseR[B](cons(f(h), acc)), f)
+    case Cons(h, t) => mapListR(t, cons(f(h), acc), f)
   }
 
   final def reverseR[A]: ListR[A] => ListR[A] = reverseR(_, nil)
@@ -44,5 +44,13 @@ private[training] trait Lists {
   def tailL[A]: ListL[A] => Maybe[A] = {
     case Snoc(_, tail) => just(tail)
     case Lin => empty
+  }
+
+  final def sumR: ListR[Int] => Int = sumR(_, 0)
+
+  @tailrec
+  private def sumR(list: ListR[Int], acc: Int): Int = list match {
+    case Nil => acc
+    case Cons(h,t) => sumR(t, acc + h)
   }
 }
