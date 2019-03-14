@@ -19,9 +19,9 @@ private[training] trait Maybes {
     }
   }
 
-  implicit final def showMaybe[A]: Show[Maybe[A]] = new Show[Maybe[A]] {
+  implicit final def showMaybe[A](implicit S: Show[A]): Show[Maybe[A]] = new Show[Maybe[A]] {
     override def show: Maybe[A] => String = {
-      case Just(a) => s"this is just a $a"
+      case Just(a) => s"this is just a ${S.show(a)}"
       case Empty => "this is empty"
     }
   }

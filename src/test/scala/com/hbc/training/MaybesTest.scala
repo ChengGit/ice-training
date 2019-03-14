@@ -30,7 +30,7 @@ class MaybesTest extends WordSpecLike with MustMatchers with Maybes {
 
   "Show" should {
     "print a correct string when maybe is a just" in {
-      Show[Maybe[Int]] show just(5) mustBe "this is just a 5"
+      Show[Maybe[Int]] show just(5) mustBe "this is just a Int[5]"
     }
 
     "print a proper empty string if maybe is empty" in {
