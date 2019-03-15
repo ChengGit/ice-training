@@ -45,13 +45,13 @@ private[training] trait Lists {
     case Snoc(_, tail) => just(tail)
     case Lin => empty
   }
-
-  implicit final def showList[A](implicit S: Show[A]): Show[ListR[A]] = new Show[ListR[A]] {
-    override def show: ListR[A] => String = {
-      case Nil => "[]"
-      case Cons(h, t) => s"[${h.show}${Fold[ListR].fold[A, String](s => a => s"$s,${a.show}")("")(t)}]"
-    }
-  }
+//
+//  implicit final def showList[A](implicit S: Show[A]): Show[ListR[A]] = new Show[ListR[A]] {
+//    override def show: ListR[A] => String = {
+//      case Nil => "[]"
+//      case Cons(h, t) => s"[${h.show}${Fold[ListR].fold[A, String](s => a => s"$s,${a.show}")("")(t)}]"
+//    }
+//  }
 
   implicit final def foldList: Fold[ListR] = new Fold[ListR] {
     override def fold[A,B]: (B => A => B) => B => ListR[A] => B = acc => zero => foldLoop(_, zero, acc)

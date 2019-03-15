@@ -34,7 +34,7 @@ class MaybesTest extends WordSpecLike with MustMatchers with Maybes {
     }
 
     "print a proper empty string if maybe is empty" in {
-      training.empty.show mustBe "this is empty"
+      training.empty[Int].show mustBe "this is empty"
     }
   }
 }

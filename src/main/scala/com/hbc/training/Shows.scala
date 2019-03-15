@@ -5,6 +5,10 @@ private[training] trait Shows {
     override def show: Int => String = i => s"Int[$i]"
   }
 
+  implicit def showFold[A,M[_]](implicit S: Show[A], F: Fold[M]): Show[M[A]] = new Show[M[A]] {
+    override def show: M[A] => String = ???
+  }
+
   implicit def showOps[A](a: A): ShowOps[A] = new ShowOps(a)
 }
 
