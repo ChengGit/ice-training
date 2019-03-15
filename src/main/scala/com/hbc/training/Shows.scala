@@ -5,7 +5,7 @@ private[training] trait Shows {
     override def show: Int => String = i => s"Int[$i]"
   }
 
-  implicit def showOps[A](a: A) = new ShowOps(a)
+  implicit def showOps[A](a: A): ShowOps[A] = new ShowOps(a)
 }
 
 final class ShowOps[A](val a: A) extends AnyVal {

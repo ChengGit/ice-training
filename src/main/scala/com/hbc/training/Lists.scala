@@ -46,6 +46,9 @@ private[training] trait Lists {
   }
 
   implicit final def showList[A](implicit S: Show[A]): Show[ListR[A]] = new Show[ListR[A]] {
-    override def show: ListR[A] => String = fold[A, String](s => a => s"${S.show(a)},$s")("")(_)
+    override def show: ListR[A] => String = {
+      case Nil => "[]"
+      case Cons(h, t) => s"[${h.show}${fold[A, String](s => a => s"$s,${a.show}")("")(t)}]"
+    }
   }
 }
