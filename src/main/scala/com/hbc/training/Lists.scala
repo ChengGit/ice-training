@@ -11,19 +11,20 @@ private[training] trait Lists {
   final def lin[A]:ListL[A] = Lin
 
   final def mapListR[A,B]: (A => B) => ListR[A] => ListR[B] =
-    f => as => reverseR(fold[A,ListR[B]](bs => a => cons(f(a), bs))(nil[B])(as))
+    f => as => reverseR(Fold[ListR].fold[A,ListR[B]](bs => a => cons(f(a), bs))(nil[B])(as))
 
-  final def reverseR[A]: ListR[A] => ListR[A] = fold[A,ListR[A]](as => a => cons(a, as))(nil[A])
+  final def reverseR[A]: ListR[A] => ListR[A] = Fold[ListR].fold[A,ListR[A]](as => a => cons(a, as))(nil[A])
 
-  final def sumR: ListR[Int] => Int = fold[Int,Int](b => a => a + b)(0)
+  final def sumR: ListR[Int] => Int =
+    Fold[ListR].fold[Int,Int](b => a => a + b)(0)
 
-  final def fold[A,B]: (B => A => B) => B => ListR[A] => B = acc => zero => foldLoop(_, zero, acc)
-
-  @tailrec
-  private def foldLoop[A,B](list: ListR[A], acc: B, f: B => A => B): B = list match {
-    case Nil => acc
-    case Cons(h,t) => foldLoop(t, f(acc)(h), f)
-  }
+//  final def fold[A,B]: (B => A => B) => B => ListR[A] => B = acc => zero => foldLoop(_, zero, acc)
+//
+//  @tailrec
+//  private def foldLoop[A,B](list: ListR[A], acc: B, f: B => A => B): B = list match {
+//    case Nil => acc
+//    case Cons(h,t) => foldLoop(t, f(acc)(h), f)
+//  }
 
   final def headR[A]: ListR[A] => Maybe[A] = {
     case Cons(head, _) => just(head)
@@ -48,7 +49,17 @@ private[training] trait Lists {
   implicit final def showList[A](implicit S: Show[A]): Show[ListR[A]] = new Show[ListR[A]] {
     override def show: ListR[A] => String = {
       case Nil => "[]"
-      case Cons(h, t) => s"[${h.show}${fold[A, String](s => a => s"$s,${a.show}")("")(t)}]"
+      case Cons(h, t) => s"[${h.show}${Fold[ListR].fold[A, String](s => a => s"$s,${a.show}")("")(t)}]"
+    }
+  }
+
+  implicit final def foldList: Fold[ListR] = new Fold[ListR] {
+    override def fold[A,B]: (B => A => B) => B => ListR[A] => B = acc => zero => foldLoop(_, zero, acc)
+
+    @tailrec
+    private def foldLoop[A,B](list: ListR[A], acc: B, f: B => A => B): B = list match {
+      case Nil => acc
+      case Cons(h,t) => foldLoop(t, f(acc)(h), f)
     }
   }
 }
