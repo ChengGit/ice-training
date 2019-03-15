@@ -5,10 +5,12 @@ import scala.annotation.tailrec
 //private[training] only available in training
 private[training] trait Lists {
 
+  /*
+    ListR Operations
+   */
+
   final def cons[A](head:A, tail:ListR[A]):ListR[A] = Cons(head, tail)
   final def nil[A]:ListR[A] = Nil
-  final def snoc[A](head:ListL[A], tail:A):ListL[A] = Snoc(head, tail)
-  final def lin[A]:ListL[A] = Lin
 
   final def mapListR[A,B]: (A => B) => ListR[A] => ListR[B] =
     f => as => reverseR(Fold[ListR].fold[A,ListR[B]](bs => a => cons(f(a), bs))(nil[B])(as))
@@ -36,22 +38,13 @@ private[training] trait Lists {
     case Nil => empty
   }
 
-  final def headL[A]: ListL[A] => Maybe[ListL[A]] = {
-    case Snoc(head, _) => just(head)
-    case Lin => empty
+  // need to comment this out and make the test pass with the implicit show function
+  implicit final def showList[A](implicit S: Show[A]): Show[ListR[A]] = new Show[ListR[A]] {
+    override def show: ListR[A] => String = {
+      case Nil => "[]"
+      case Cons(h, t) => s"[${h.show}${Fold[ListR].fold[A, String](s => a => s"$s,${a.show}")("")(t)}]"
+    }
   }
-
-  final def tailL[A]: ListL[A] => Maybe[A] = {
-    case Snoc(_, tail) => just(tail)
-    case Lin => empty
-  }
-//
-//  implicit final def showList[A](implicit S: Show[A]): Show[ListR[A]] = new Show[ListR[A]] {
-//    override def show: ListR[A] => String = {
-//      case Nil => "[]"
-//      case Cons(h, t) => s"[${h.show}${Fold[ListR].fold[A, String](s => a => s"$s,${a.show}")("")(t)}]"
-//    }
-//  }
 
   implicit final def foldList: Fold[ListR] = new Fold[ListR] {
     override def fold[A,B]: (B => A => B) => B => ListR[A] => B = acc => zero => foldLoop(_, zero, acc)
@@ -62,4 +55,27 @@ private[training] trait Lists {
       case Cons(h,t) => foldLoop(t, f(acc)(h), f)
     }
   }
+
+  /*
+    ListL Operations
+   */
+
+  final def snoc[A](head:ListL[A], tail:A):ListL[A] = Snoc(head, tail)
+  final def lin[A]:ListL[A] = Lin
+
+  final def mapListL[A,B]: (A => B) => ListL[A] => ListL[B] = ???
+
+  final def headL[A]: ListL[A] => Maybe[ListL[A]] = {
+    case Snoc(head, _) => just(head)
+    case Lin => empty
+  }
+
+  final def tailL[A]: ListL[A] => Maybe[A] = {
+    case Snoc(_, tail) => just(tail)
+    case Lin => empty
+  }
+
+
+
+
 }
