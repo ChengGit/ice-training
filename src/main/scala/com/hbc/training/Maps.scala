@@ -6,6 +6,11 @@ private[training] trait Maps {
       f => as => as.fold(nil[B])(acc => a => cons(f(a), acc)).reverse
   }
 
+  implicit def mapListL: Map[ListL] = new Map[ListL] {
+    override def map[A, B]: (A => B) => ListL[A] => ListL[B] =
+      f => as => as.fold(lin[B])(acc => a => snoc(acc, f(a))).reverse
+  }
+
   implicit def mapOps[M[_],A](m: M[A]): MapOps[M,A] = new MapOps[M,A](m)
 }
 

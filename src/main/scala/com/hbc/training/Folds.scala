@@ -5,12 +5,22 @@ import scala.annotation.tailrec
 private[training] trait Folds {
   implicit final def foldListR: Fold[ListR] = new Fold[ListR] {
     override def fold[A, B]: B => (B => A => B) => ListR[A] => B =
-      acc => f => list => foldLoop(acc, f, list)
+      acc => f => list => foldLoopR(acc, f, list)
 
     @tailrec
-    private final def foldLoop[A,B](acc: B, f: B => A => B, list: ListR[A]): B = list match {
+    private final def foldLoopR[A,B](acc: B, f: B => A => B, list: ListR[A]): B = list match {
       case Nil => acc
-      case Cons(h,t) => foldLoop(f(acc)(h), f, t)
+      case Cons(h,t) => foldLoopR(f(acc)(h), f, t)
+    }
+  }
+
+  implicit def foldListL: Fold[ListL] = new Fold[ListL] {
+    override def fold[A, B]: B => (B => A => B) => ListL[A] => B = acc => f => as => foldLoopL(acc, f, as)
+
+    @tailrec
+    private final def foldLoopL[A,B](acc: B, f: B => A => B, as: ListL[A]): B = as match {
+      case Lin => acc
+      case Snoc(h,t) => foldLoopL(f(acc)(t), f, h)
     }
   }
 

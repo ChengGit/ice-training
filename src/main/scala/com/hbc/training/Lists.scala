@@ -11,6 +11,9 @@ private[training] trait Lists {
   final def sumR: ListR[Int] => Int =
     l => l.fold(0)(acc => i => i + acc)
 
+  final def sumL: ListL[Int] => Int =
+    l => l.fold(0)(acc => i => i + acc)
+
   final def headR[A]: ListR[A] => Maybe[A] = {
     case Cons(head, _) => just(head)
     case Nil => empty

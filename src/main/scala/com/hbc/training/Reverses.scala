@@ -5,6 +5,10 @@ private[training] trait Reverses {
     override def reverse[A]: ListR[A] => ListR[A] = l => l.fold(nil[A])(as => a => cons(a,as))
   }
 
+  implicit def reverseListL: Reverse[ListL] = new Reverse[ListL] {
+    override def reverse[A]: ListL[A] => ListL[A] = l => l.fold(lin[A])(bs => a => snoc(bs, a))
+  }
+
   implicit def reverseOps[M[_],A](m: M[A]): ReverseOps[M,A] = new ReverseOps[M,A](m)
 }
 
