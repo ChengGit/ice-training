@@ -60,12 +60,32 @@ final class ListsTest extends WordSpecLike with MustMatchers with Lists {
     }
   }
 
+  "Head" should {
+    "return a ListL for non-empty list" in {
+      headL[Int](snoc(snoc(lin, 3), 4)) mustBe just(snoc(lin, 3))
+    }
+
+    "return empty for empty ListL" in {
+      headL[Int](lin[Int]) mustBe training.empty[Int]
+    }
+  }
+
+  "Tail" should {
+    "return tail element for non-empty ListL" in {
+      tailL[Int](snoc(lin[Int],6)) mustBe just(6)
+    }
+
+    "return nothing for empty ListL" in {
+      tailL(lin) mustBe training.empty
+    }
+  }
+
   "Map" should {
     "return a new ListL successfully in the correct order" in {
       mapListL[Int, Int](_ + 3)(snoc(snoc(snoc(lin, 1), 2), 3)) mustBe snoc(snoc(snoc(lin, 4), 5), 6)
     }
 
-    "return lin when ListL is empty" in {
+    "return nothing when ListL is empty" in {
       mapListL[Int,Int](_ + 3)(lin[Int]) mustBe lin[Int]
     }
   }
