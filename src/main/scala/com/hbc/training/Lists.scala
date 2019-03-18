@@ -63,7 +63,25 @@ private[training] trait Lists {
   final def snoc[A](head:ListL[A], tail:A):ListL[A] = Snoc(head, tail)
   final def lin[A]:ListL[A] = Lin
 
-  final def mapListL[A,B]: (A => B) => ListL[A] => ListL[B] = ???
+  final def mapListL[A,B]: (A => B) => ListL[A] => ListL[B] = {
+    func => listl => reverse(map(func, listl, lin[B]), lin)
+  }
+
+  @tailrec
+  private def map[A,B](f:A => B, list: ListL[A], acc: ListL[B]): ListL[B] = list match {
+    case Lin => acc
+    case Snoc(h, t) => map(f, h, snoc(acc, f(t)))
+  }
+
+  final def reverseL[A]: ListL[A] => ListL[A] = {
+    listl => reverse(listl, lin[A])
+  }
+
+  @tailrec
+  private def reverse[A](list: ListL[A], acc: ListL[A]): ListL[A] = list match {
+    case Lin => acc
+    case Snoc(h, t) => reverse(h, snoc(acc, t))
+  }
 
   final def headL[A]: ListL[A] => Maybe[ListL[A]] = {
     case Snoc(head, _) => just(head)

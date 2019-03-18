@@ -60,5 +60,24 @@ final class ListsTest extends WordSpecLike with MustMatchers with Lists {
     }
   }
 
+  "Map" should {
+    "return a new ListL successfully in the correct order" in {
+      mapListL[Int, Int](_ + 3)(snoc(snoc(snoc(lin, 1), 2), 3)) mustBe snoc(snoc(snoc(lin, 4), 5), 6)
+    }
+
+    "return lin when ListL is empty" in {
+      mapListL[Int,Int](_ + 3)(lin[Int]) mustBe lin[Int]
+    }
+  }
+
+  "Reverse" should {
+    "flip the order of a non-empty ListL" in {
+      reverseL[Int](snoc(snoc(snoc(lin, 7), 8), 9)) mustBe snoc(snoc(snoc(lin, 9), 8), 7)
+    }
+
+    "return lin when ListL is empty" in {
+      reverseL[Int](lin[Int]) mustBe lin[Int]
+    }
+  }
 
 }
