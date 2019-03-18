@@ -83,6 +83,14 @@ private[training] trait Lists {
     case Snoc(h, t) => reverse(h, snoc(acc, t))
   }
 
+  final def sumL: ListL[Int] => Int = sumListL(_, 0)
+
+  @tailrec
+  private def sumListL[Int](listl: ListL[Int], acc: Int): Int = listl match {
+    case Lin => acc
+    case Snoc(h,t) => sumListL(h, acc + t)
+  }
+
   final def headL[A]: ListL[A] => Maybe[ListL[A]] = {
     case Snoc(head, _) => just(head)
     case Lin => empty
@@ -92,8 +100,5 @@ private[training] trait Lists {
     case Snoc(_, tail) => just(tail)
     case Lin => empty
   }
-
-
-
 
 }
