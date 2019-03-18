@@ -8,11 +8,9 @@ private[training] trait Lists {
   final def snoc[A](head:ListL[A], tail:A):ListL[A] = Snoc(head, tail)
   final def lin[A]:ListL[A] = Lin
 
-  final def sumR: ListR[Int] => Int =
-    l => l.fold(0)(acc => i => i + acc)
+  final def sumR: ListR[Int] => Int = _.fold(0)(acc => i => i + acc)
 
-  final def sumL: ListL[Int] => Int =
-    l => l.fold(0)(acc => i => i + acc)
+  final def sumL: ListL[Int] => Int = _.fold(0)(acc => i => i + acc)
 
   final def headR[A]: ListR[A] => Maybe[A] = {
     case Cons(head, _) => just(head)

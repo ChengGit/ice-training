@@ -3,12 +3,12 @@ package com.hbc.training
 private[training] trait Maps {
   implicit def mapListR: Map[ListR] = new Map[ListR] {
     override def map[A, B]: (A => B) => ListR[A] => ListR[B] =
-      f => as => as.fold(nil[B])(acc => a => cons(f(a), acc)).reverse
+      f => _.fold(nil[B])(acc => a => cons(f(a), acc)).reverse
   }
 
   implicit def mapListL: Map[ListL] = new Map[ListL] {
     override def map[A, B]: (A => B) => ListL[A] => ListL[B] =
-      f => as => as.fold(lin[B])(acc => a => snoc(acc, f(a))).reverse
+      f => _.fold(lin[B])(acc => a => snoc(acc, f(a))).reverse
   }
 
   implicit def mapOps[M[_],A](m: M[A]): MapOps[M,A] = new MapOps[M,A](m)
