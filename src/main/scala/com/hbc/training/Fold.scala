@@ -1,7 +1,7 @@
 package com.hbc.training
 
-trait Fold[C[_]] { //C[_] higher kind example
-  def fold[A,B]: (B => A => B) => B => C[A] => B
+trait Fold[M[_]] { //M[_] higher kind example
+  def fold[A,B]: B => (B => A => B) => M[A] => B
 }
 
 object Fold {

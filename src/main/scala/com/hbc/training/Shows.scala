@@ -6,7 +6,10 @@ private[training] trait Shows {
   }
 
   implicit def showFold[A,M[_]](implicit S: Show[A], F: Fold[M]): Show[M[A]] = new Show[M[A]] {
-    override def show: M[A] => String = ???
+    override def show: M[A] => String = ms => ms.fold("")(s => a => s"$s,${a.show}") drop 1 match {
+      case "" => "[]"
+      case other => s"[$other]"
+    }
   }
 
   implicit def showOps[A](a: A): ShowOps[A] = new ShowOps(a)
