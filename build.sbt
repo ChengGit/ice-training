@@ -68,6 +68,11 @@ lazy val commonSettings = List(
 
   fork in Test := true,
 
+  initialCommands in console :=
+    """
+      |import com.hbc.training._
+    """.stripMargin,
+  
   addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.9"),
   addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.2.4"),
 
