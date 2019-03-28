@@ -62,4 +62,15 @@ private[training] trait Lists {
       case Cons(h,t) => foldLoop(t, f(acc)(h), f)
     }
   }
+
+  implicit final def functorList: Functor[ListR] = new Functor[ListR] {
+    // implement map functor algebra using fold type class
+    override def map[A, B]: (A => B) => ListR[A] => ListR[B] = f => functorLoop(_, nil[B], f)
+
+    @tailrec
+    private def functorLoop[A, B](list: ListR[A], acc: ListR[B], f: A => B): ListR[B] = list match {
+      case Nil => acc
+      case Cons(h, t) => functorLoop(t, cons(f(h), acc), f)
+    }
+  }
 }
