@@ -11,12 +11,15 @@ private[training] trait Lists {
   final def lin[A]:ListL[A] = Lin
 
   final def mapListR[A,B]: (A => B) => ListR[A] => ListR[B] =
-    f => as => reverseR(Fold[ListR].fold[A,ListR[B]](bs => a => cons(f(a), bs))(nil[B])(as))
+//    f => as => reverseR(Fold[ListR].fold[A,ListR[B]](bs => a => cons(f(a), bs))(nil[B])(as))
+    f => as => reverseR(as.fold[ListR[B]](nil, bs => a => cons(f(a), bs)))
 
-  final def reverseR[A]: ListR[A] => ListR[A] = Fold[ListR].fold[A,ListR[A]](as => a => cons(a, as))(nil[A])
+  final def reverseR[A]: ListR[A] => ListR[A] =
+//    Fold[ListR].fold[A,ListR[A]](as => a => cons(a, as))(nil[A])
+    _.fold[ListR[A]](nil, as => a => cons(a, as))
 
   final def sumR: ListR[Int] => Int =
-    Fold[ListR].fold[Int,Int](b => a => a + b)(0)
+    _.fold[Int](0, b => a => a + b)
 
 //  final def fold[A,B]: (B => A => B) => B => ListR[A] => B = acc => zero => foldLoop(_, zero, acc)
 //
@@ -53,15 +56,15 @@ private[training] trait Lists {
 //    }
 //  }
 
-  implicit final def foldList: Fold[ListR] = new Fold[ListR] {
-    override def fold[A,B]: (B => A => B) => B => ListR[A] => B = acc => zero => foldLoop(_, zero, acc)
-
-    @tailrec
-    private def foldLoop[A,B](list: ListR[A], acc: B, f: B => A => B): B = list match {
-      case Nil => acc
-      case Cons(h,t) => foldLoop(t, f(acc)(h), f)
-    }
-  }
+//  implicit final def foldList: Fold[ListR] = new Fold[ListR] {
+//    override def fold[A,B]: (B => A => B) => B => ListR[A] => B = acc => zero => foldLoop(_, zero, acc)
+//
+//    @tailrec
+//    private def foldLoop[A,B](list: ListR[A], acc: B, f: B => A => B): B = list match {
+//      case Nil => acc
+//      case Cons(h,t) => foldLoop(t, f(acc)(h), f)
+//    }
+//  }
 
   implicit final def functorList: Functor[ListR] = new Functor[ListR] {
     // implement map functor algebra using fold type class
