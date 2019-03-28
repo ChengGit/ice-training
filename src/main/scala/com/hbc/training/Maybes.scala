@@ -25,4 +25,11 @@ private[training] trait Maybes {
       case Empty => "this is empty"
     }
   }
+
+  implicit final def functorMaybe: Functor[Maybe] = new Functor[Maybe] {
+    override def map[A, B]: (A => B) => Maybe[A] => Maybe[B] = f => {
+      case Just(a) => just(f(a))
+      case Empty => empty[B]
+    }
+  }
 }
