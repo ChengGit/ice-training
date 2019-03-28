@@ -1,6 +1,8 @@
 package com.hbc.training
 
 private[training] trait Coproducts {
+  final type :+:[A, B] = Coproduct[A, B]
+
   final def injectedL[A,B](a:A):Coproduct[A,B] = InjectedL(a)
   final def injectedR[A,B](b:B):Coproduct[A,B] = InjectedR(b)
 
